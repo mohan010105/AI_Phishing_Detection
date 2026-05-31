@@ -1,0 +1,599 @@
+We are now starting PHASE 2 — FRONTEND FOUNDATION for the AI Phishing Detection Platform.
+
+IMPORTANT:
+Complete this phase END-TO-END with a production-level frontend architecture.
+
+The frontend must be:
+
+* responsive
+* scalable
+* modern
+* cybersecurity-themed
+* reusable
+* TypeScript-based
+* Vercel-compatible
+* Replit-compatible
+
+DO NOT generate placeholder UI.
+DO NOT generate broken imports.
+DO NOT skip responsive design.
+DO NOT generate incomplete pages.
+
+Generate REAL WORKING FRONTEND CODE.
+
+---
+
+## TECH STACK
+
+Frontend:
+
+* Next.js 15 App Router
+* React
+* TypeScript
+* Tailwind CSS
+* Framer Motion
+* Axios
+* React Hook Form
+* React Query
+* Zustand
+* Lucide Icons
+
+Authentication:
+
+* Supabase Auth
+
+Deployment:
+
+* Vercel Compatible
+* Replit Compatible
+
+---
+
+## FRONTEND FOLDER STRUCTURE
+
+Generate complete scalable frontend structure:
+
+frontend/
+├── app/
+│   ├── (auth)/
+│   ├── dashboard/
+│   ├── admin/
+│   ├── scanner/
+│   ├── history/
+│   ├── reports/
+│   ├── profile/
+│   ├── globals.css
+│   ├── layout.tsx
+│   └── page.tsx
+│
+├── components/
+│   ├── ui/
+│   ├── layout/
+│   ├── dashboard/
+│   ├── scanner/
+│   ├── auth/
+│   ├── charts/
+│   └── shared/
+│
+├── hooks/
+├── services/
+├── store/
+├── lib/
+├── utils/
+├── styles/
+├── supabase/
+├── constants/
+├── types/
+├── middleware.ts
+└── providers/
+
+Ensure scalable clean architecture.
+
+---
+
+## STEP 1 — PROJECT SETUP
+
+1. Configure Next.js 15 App Router
+2. Configure TypeScript
+3. Configure Tailwind CSS
+4. Configure ESLint + Prettier
+5. Configure absolute imports
+6. Configure environment variables
+7. Configure reusable utilities
+8. Configure responsive layouts
+
+Generate:
+
+* tsconfig.json
+* tailwind.config.ts
+* next.config.js
+* .env.example
+
+---
+
+## STEP 2 — GLOBAL UI SYSTEM
+
+Create reusable design system.
+
+Generate:
+
+* Button component
+* Input component
+* Card component
+* Modal component
+* Loader component
+* Toast component
+* Table component
+* Badge component
+
+Requirements:
+
+* Fully responsive
+* Tailwind-based
+* Reusable props
+* Accessible UI
+* Dark cybersecurity theme
+* Clean animations
+
+---
+
+## STEP 3 — LANDING PAGE
+
+Create modern cybersecurity landing page.
+
+Sections:
+
+1. Hero Section
+2. Features Section
+3. Threat Statistics Section
+4. Why Choose Us
+5. CTA Section
+6. Footer
+
+Features:
+
+* animated hero
+* glowing cybersecurity effects
+* modern cards
+* responsive navbar
+* mobile menu
+* Framer Motion animations
+
+Theme:
+
+* dark cybersecurity dashboard style
+* blue neon accents
+* professional UI
+
+Create:
+
+* responsive design
+* smooth transitions
+* animated sections
+
+---
+
+## STEP 4 — AUTHENTICATION PAGES
+
+Create:
+
+1. Login Page
+2. Register Page
+3. Forgot Password Page
+
+Implement:
+
+* React Hook Form
+* validation
+* Supabase authentication integration
+* session handling
+* error handling
+* loading states
+* toast notifications
+
+Features:
+
+* password visibility toggle
+* remember me
+* redirect after login
+* protected routing
+
+Create:
+
+* auth services
+* auth hooks
+* auth context/store
+
+---
+
+## STEP 5 — DASHBOARD LAYOUT
+
+Create production-level dashboard layout.
+
+Features:
+
+* collapsible sidebar
+* top navbar
+* user profile dropdown
+* notification area
+* responsive mobile sidebar
+* breadcrumb navigation
+
+Sidebar Navigation:
+
+1. Dashboard
+2. URL Scanner
+3. Email Analyzer
+4. Scan History
+5. Reports
+6. Profile
+7. Settings
+
+Admin Sidebar:
+
+1. Users
+2. Analytics
+3. Threat Monitoring
+4. Reports
+
+---
+
+## STEP 6 — DASHBOARD HOME PAGE
+
+Create dashboard analytics page.
+
+Analytics Cards:
+
+* Total Scans
+* Safe URLs
+* Suspicious URLs
+* High Risk Threats
+
+Charts:
+
+* Threat trend graph
+* Scan activity graph
+* Risk distribution chart
+
+Use:
+
+* Recharts
+* responsive charts
+
+Add:
+
+* loading skeletons
+* animated cards
+* statistics counters
+
+---
+
+## STEP 7 — URL SCANNER PAGE
+
+Create full URL scanner UI.
+
+Features:
+
+* URL input
+* Scan button
+* loading state
+* animated scanner
+* result cards
+* risk meter
+* threat indicators
+* recommendation section
+
+Display:
+
+* Risk Score
+* HTTPS Status
+* Suspicious Indicators
+* VirusTotal Result
+* Google Safe Browsing Result
+
+Add:
+
+* copy URL feature
+* clear button
+* scan history preview
+
+---
+
+## STEP 8 — EMAIL ANALYZER PAGE
+
+Create phishing email analyzer UI.
+
+Features:
+
+* textarea input
+* analyze button
+* loading animation
+* result section
+* highlighted suspicious keywords
+* risk score display
+
+Display:
+
+* scam indicators
+* urgency detection
+* phishing keywords
+* safety recommendations
+
+---
+
+## STEP 9 — SCAN HISTORY PAGE
+
+Create history management UI.
+
+Features:
+
+* searchable table
+* filtering
+* sorting
+* pagination
+* export functionality
+
+Columns:
+
+* scan type
+* content
+* risk score
+* result
+* created date
+
+---
+
+## STEP 10 — REPORTS PAGE
+
+Create reports dashboard.
+
+Features:
+
+* report cards
+* threat summaries
+* downloadable reports
+* filter reports
+* categorized threat reports
+
+---
+
+## STEP 11 — PROFILE PAGE
+
+Create user profile page.
+
+Features:
+
+* update profile
+* profile image
+* account settings
+* password reset
+* session management
+
+---
+
+## STEP 12 — ADMIN PANEL UI
+
+Create admin dashboard UI.
+
+Features:
+
+* user management table
+* analytics overview
+* threat monitoring cards
+* scan statistics
+* recent suspicious activities
+
+Add:
+
+* charts
+* filters
+* responsive admin layout
+
+---
+
+## STEP 13 — STATE MANAGEMENT
+
+Use Zustand.
+
+Manage:
+
+* authentication state
+* dashboard state
+* scanner results
+* notifications
+* analytics state
+
+Create:
+
+* auth store
+* scanner store
+* dashboard store
+
+---
+
+## STEP 14 — API SERVICE LAYER
+
+Create centralized API services.
+
+services/
+
+* authService.ts
+* scanService.ts
+* adminService.ts
+* analyticsService.ts
+
+Use:
+
+* Axios instance
+* interceptors
+* token handling
+* error handling
+
+---
+
+## STEP 15 — SUPABASE FRONTEND SETUP
+
+Create:
+frontend/supabase/
+
+Implement:
+
+* Supabase client
+* session persistence
+* auth helpers
+* token management
+
+Environment variables:
+
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+
+---
+
+## STEP 16 — PROTECTED ROUTING
+
+Create:
+middleware.ts
+
+Implement:
+
+* protected routes
+* auth redirects
+* admin route protection
+* session validation
+
+Ensure:
+
+* refresh works correctly
+* middleware works in production
+* no redirect loops
+
+---
+
+## STEP 17 — RESPONSIVE DESIGN
+
+Ensure:
+
+* mobile responsive
+* tablet responsive
+* desktop responsive
+
+Implement:
+
+* responsive sidebar
+* responsive cards
+* responsive charts
+* responsive tables
+
+---
+
+## STEP 18 — LOADING & ERROR STATES
+
+Add:
+
+* skeleton loaders
+* loading animations
+* error boundaries
+* toast notifications
+* fallback UI
+
+---
+
+## STEP 19 — FRONTEND SECURITY
+
+Implement:
+
+* secure token storage
+* protected routes
+* secure API requests
+* XSS-safe rendering
+* environment variable protection
+
+---
+
+## STEP 20 — VERCEL COMPATIBILITY
+
+VERY IMPORTANT:
+
+Prevent:
+
+* 404 refresh errors
+* broken routes
+* middleware failures
+* hydration issues
+
+Create:
+
+1. vercel.json
+2. production-safe middleware
+3. route-safe architecture
+
+Use:
+
+{
+"rewrites": [
+{
+"source": "/(.*)",
+"destination": "/"
+}
+]
+}
+
+Ensure:
+
+* refresh works correctly
+* protected routes work
+* App Router works correctly
+* deployment succeeds on Vercel
+
+---
+
+## STEP 21 — BUILD VALIDATION
+
+Ensure:
+
+* npm install works
+* npm run dev works
+* npm run build works
+
+Automatically fix:
+
+* TypeScript issues
+* import issues
+* hydration errors
+* build failures
+
+---
+
+## STEP 22 — OUTPUT REQUIREMENTS
+
+Generate:
+
+1. Full frontend implementation
+2. Responsive UI
+3. Dashboard
+4. Scanner pages
+5. Authentication pages
+6. Admin panel
+7. State management
+8. API service layer
+9. Middleware
+10. Supabase integration
+11. Loading states
+12. Toast notifications
+13. Recharts analytics
+14. Vercel configuration
+
+IMPORTANT:
+
+* Generate production-level frontend
+* Use reusable components
+* Use scalable architecture
+* Use clean TypeScript code
+* Ensure modern UI/UX
+* Ensure cybersecurity theme
+* Ensure Replit compatibility
+* Ensure Vercel compatibility
+* Ensure no placeholder code remains
+
+The frontend should be fully functional and professionally designed after this phase completes.

@@ -1,0 +1,1238 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: AI Phishing Detection Platform API
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: auth
+    description: Authentication operations
+  - name: scan
+    description: Scan operations
+  - name: admin
+    description: Admin operations
+  - name: dashboard
+    description: Dashboard and analytics
+  - name: assistant
+    description: AI Security Assistant
+
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  /auth/register:
+    post:
+      operationId: register
+      tags: [auth]
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterInput"
+      responses:
+        "201":
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "409":
+          description: Email already registered
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /auth/login:
+    post:
+      operationId: login
+      tags: [auth]
+      summary: Login with email and password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginInput"
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "401":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /auth/profile:
+    get:
+      operationId: getProfile
+      tags: [auth]
+      summary: Get current user profile
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: User profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    patch:
+      operationId: updateProfile
+      tags: [auth]
+      summary: Update current user profile
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateProfileInput"
+      responses:
+        "200":
+          description: Profile updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /auth/change-password:
+    post:
+      operationId: changePassword
+      tags: [auth]
+      summary: Change current user password
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChangePasswordInput"
+      responses:
+        "200":
+          description: Password changed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [message]
+                properties:
+                  message:
+                    type: string
+        "400":
+          description: Incorrect current password or validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /scan/url:
+    post:
+      operationId: scanUrl
+      tags: [scan]
+      summary: Scan a URL for phishing
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UrlScanInput"
+      responses:
+        "200":
+          description: Scan result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ScanResult"
+        "400":
+          description: Invalid URL
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /scan/email:
+    post:
+      operationId: scanEmail
+      tags: [scan]
+      summary: Analyze an email for phishing
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmailScanInput"
+      responses:
+        "200":
+          description: Email analysis result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ScanResult"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /scan/history:
+    get:
+      operationId: getScanHistory
+      tags: [scan]
+      summary: Get scan history for current user
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum: [url, email]
+      responses:
+        "200":
+          description: Paginated scan history
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ScanHistoryResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /dashboard/stats:
+    get:
+      operationId: getDashboardStats
+      tags: [dashboard]
+      summary: Get dashboard statistics for current user
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Dashboard statistics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardStats"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /dashboard/recent:
+    get:
+      operationId: getRecentScans
+      tags: [dashboard]
+      summary: Get recent scans for current user
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 5
+      responses:
+        "200":
+          description: Recent scans
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ScanResult"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /dashboard/risk-breakdown:
+    get:
+      operationId: getRiskBreakdown
+      tags: [dashboard]
+      summary: Get risk level breakdown counts
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Risk breakdown
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RiskBreakdown"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /dashboard/trend:
+    get:
+      operationId: getDashboardTrend
+      tags: [dashboard]
+      summary: Get daily scan counts for the last 7 days
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Daily scan trend
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DailyCount"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /admin/users:
+    get:
+      operationId: adminGetUsers
+      tags: [admin]
+      summary: Get all users (admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        "200":
+          description: Paginated users list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsersListResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /admin/analytics:
+    get:
+      operationId: adminGetAnalytics
+      tags: [admin]
+      summary: Get platform-wide analytics (admin only)
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Platform analytics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminAnalytics"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /scan/qr:
+    post:
+      operationId: scanQr
+      tags: [scan]
+      summary: Scan a QR code image for phishing
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [image]
+              properties:
+                image:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: QR scan result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QrScanResult"
+        "400":
+          description: No image provided
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "422":
+          description: No QR code detected or non-URL QR code
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /scan/screenshot:
+    post:
+      operationId: scanScreenshot
+      tags: [scan]
+      summary: Analyze a website screenshot for phishing
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [image]
+              properties:
+                image:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: Screenshot analysis result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ScreenshotScanResult"
+        "400":
+          description: No image provided
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /assistant/chat:
+    post:
+      operationId: assistantChat
+      tags: [assistant]
+      summary: Send a message to the AI Security Assistant
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AssistantChatRequest"
+      responses:
+        "200":
+          description: Assistant reply
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AssistantChatResponse"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /assistant/history:
+    get:
+      operationId: getAssistantHistory
+      tags: [assistant]
+      summary: Get chat history with the AI assistant
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Chat history
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AssistantHistoryResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: clearAssistantHistory
+      tags: [assistant]
+      summary: Clear chat history
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: History cleared
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success]
+                properties:
+                  success:
+                    type: boolean
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /dashboard/security-score:
+    get:
+      operationId: getSecurityScore
+      tags: [dashboard]
+      summary: Get user security awareness score
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Security score and tier
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SecurityScore"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /dashboard/threat-categories:
+    get:
+      operationId: getThreatCategories
+      tags: [dashboard]
+      summary: Get threat category breakdown from scan history
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Threat category counts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ThreatCategory"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /dashboard/threat-feed:
+    get:
+      operationId: getThreatFeed
+      tags: [dashboard]
+      summary: Get recent high-risk and suspicious threat feed
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Recent threats
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ThreatEntry"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /scan/compare:
+    post:
+      operationId: compareScan
+      tags: [scan]
+      summary: Compare two scan targets side by side
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CompareInput"
+      responses:
+        "200":
+          description: Comparison result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CompareResult"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /admin/reports:
+    get:
+      operationId: adminGetReports
+      tags: [admin]
+      summary: Get all scan reports (admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+        - name: riskLevel
+          in: query
+          schema:
+            type: string
+            enum: [safe, suspicious, high_risk]
+      responses:
+        "200":
+          description: Paginated reports
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportsResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
+
+    RegisterInput:
+      type: object
+      required: [email, password, name]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 8
+        name:
+          type: string
+          minLength: 2
+
+    LoginInput:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+
+    User:
+      type: object
+      required: [id, email, name, role, createdAt]
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        name:
+          type: string
+        role:
+          type: string
+          enum: [user, admin]
+        createdAt:
+          type: string
+          format: date-time
+
+    AuthResponse:
+      type: object
+      required: [token, user]
+      properties:
+        token:
+          type: string
+        user:
+          $ref: "#/components/schemas/User"
+
+    UrlScanInput:
+      type: object
+      required: [url]
+      properties:
+        url:
+          type: string
+          format: uri
+
+    EmailScanInput:
+      type: object
+      required: [content]
+      properties:
+        content:
+          type: string
+          minLength: 10
+        subject:
+          type: ["string", "null"]
+        sender:
+          type: ["string", "null"]
+
+    AiSummary:
+      type: object
+      required: [technical, executive, beginner, incidentResponse]
+      properties:
+        technical:
+          type: string
+        executive:
+          type: string
+        beginner:
+          type: string
+        incidentResponse:
+          type: array
+          items:
+            type: string
+
+    AssistantChatRequest:
+      type: object
+      required: [message]
+      properties:
+        message:
+          type: string
+          minLength: 1
+
+    AssistantChatResponse:
+      type: object
+      required: [reply]
+      properties:
+        reply:
+          type: string
+
+    AssistantMessage:
+      type: object
+      required: [id, role, content, createdAt]
+      properties:
+        id:
+          type: integer
+        role:
+          type: string
+          enum: [user, assistant]
+        content:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    AssistantHistoryResponse:
+      type: object
+      required: [messages]
+      properties:
+        messages:
+          type: array
+          items:
+            $ref: "#/components/schemas/AssistantMessage"
+
+    QrScanResult:
+      type: object
+      required: [id, type, target, extractedFrom, riskScore, riskLevel, findings, createdAt]
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+        extractedFrom:
+          type: string
+        target:
+          type: string
+        riskScore:
+          type: integer
+        riskLevel:
+          type: string
+          enum: [safe, suspicious, high_risk]
+        findings:
+          type: array
+          items:
+            type: string
+        explanation:
+          type: ["string", "null"]
+        aiSummary:
+          oneOf:
+            - $ref: "#/components/schemas/AiSummary"
+            - type: "null"
+        userId:
+          type: ["integer", "null"]
+        createdAt:
+          type: string
+          format: date-time
+
+    ScreenshotScanResult:
+      type: object
+      required: [riskScore, riskLevel, findings, explanation]
+      properties:
+        riskScore:
+          type: integer
+        riskLevel:
+          type: string
+          enum: [safe, suspicious, high_risk]
+        findings:
+          type: array
+          items:
+            type: string
+        explanation:
+          type: string
+        aiSummary:
+          oneOf:
+            - $ref: "#/components/schemas/AiSummary"
+            - type: "null"
+        detectedText:
+          type: string
+
+    ExternalSource:
+      type: object
+      required: [source, available]
+      properties:
+        source:
+          type: string
+        available:
+          type: boolean
+        status:
+          type: string
+        detail:
+          type: string
+        score:
+          type: integer
+
+    ScanResult:
+      type: object
+      required: [id, type, target, riskScore, riskLevel, findings, createdAt]
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+          enum: [url, email]
+        target:
+          type: string
+        riskScore:
+          type: integer
+          minimum: 0
+          maximum: 100
+        riskLevel:
+          type: string
+          enum: [safe, suspicious, high_risk]
+        findings:
+          type: array
+          items:
+            type: string
+        externalSources:
+          type: array
+          items:
+            $ref: "#/components/schemas/ExternalSource"
+        explanation:
+          type: ["string", "null"]
+        aiSummary:
+          oneOf:
+            - $ref: "#/components/schemas/AiSummary"
+            - type: "null"
+        userId:
+          type: ["integer", "null"]
+        createdAt:
+          type: string
+          format: date-time
+
+    ScanHistoryResponse:
+      type: object
+      required: [scans, total, page, limit]
+      properties:
+        scans:
+          type: array
+          items:
+            $ref: "#/components/schemas/ScanResult"
+        total:
+          type: integer
+        page:
+          type: integer
+        limit:
+          type: integer
+
+    DashboardStats:
+      type: object
+      required: [totalScans, urlScans, emailScans, highRiskCount, suspiciousCount, safeCount, scansThisWeek]
+      properties:
+        totalScans:
+          type: integer
+        urlScans:
+          type: integer
+        emailScans:
+          type: integer
+        highRiskCount:
+          type: integer
+        suspiciousCount:
+          type: integer
+        safeCount:
+          type: integer
+        scansThisWeek:
+          type: integer
+
+    RiskBreakdown:
+      type: object
+      required: [safe, suspicious, high_risk]
+      properties:
+        safe:
+          type: integer
+        suspicious:
+          type: integer
+        high_risk:
+          type: integer
+
+    UsersListResponse:
+      type: object
+      required: [users, total, page, limit]
+      properties:
+        users:
+          type: array
+          items:
+            $ref: "#/components/schemas/User"
+        total:
+          type: integer
+        page:
+          type: integer
+        limit:
+          type: integer
+
+    ReportsResponse:
+      type: object
+      required: [reports, total, page, limit]
+      properties:
+        reports:
+          type: array
+          items:
+            $ref: "#/components/schemas/ScanResult"
+        total:
+          type: integer
+        page:
+          type: integer
+        limit:
+          type: integer
+
+    DailyCount:
+      type: object
+      required: [date, count]
+      properties:
+        date:
+          type: string
+        count:
+          type: integer
+
+    ThreatEntry:
+      type: object
+      required: [id, type, target, riskScore, riskLevel, createdAt]
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+          enum: [url, email]
+        target:
+          type: string
+        riskScore:
+          type: integer
+        riskLevel:
+          type: string
+          enum: [safe, suspicious, high_risk]
+        createdAt:
+          type: string
+          format: date-time
+
+    SecurityScore:
+      type: object
+      required: [score, tier, totalScans, threatsAvoided, safeScans]
+      properties:
+        score:
+          type: integer
+          minimum: 0
+          maximum: 100
+        tier:
+          type: string
+          enum: [bronze, silver, gold, platinum]
+        totalScans:
+          type: integer
+        threatsAvoided:
+          type: integer
+        safeScans:
+          type: integer
+
+    ThreatCategory:
+      type: object
+      required: [category, count]
+      properties:
+        category:
+          type: string
+        count:
+          type: integer
+
+    CompareScanResult:
+      type: object
+      required: [target, type, riskScore, riskLevel, findings]
+      properties:
+        target:
+          type: string
+        type:
+          type: string
+          enum: [url, email]
+        riskScore:
+          type: integer
+        riskLevel:
+          type: string
+          enum: [safe, suspicious, high_risk]
+        findings:
+          type: array
+          items:
+            type: string
+        explanation:
+          type: ["string", "null"]
+        incidentResponse:
+          type: array
+          items:
+            type: string
+
+    CompareInput:
+      type: object
+      required: [typeA, targetA, typeB, targetB]
+      properties:
+        typeA:
+          type: string
+          enum: [url, email]
+        targetA:
+          type: string
+        typeB:
+          type: string
+          enum: [url, email]
+        targetB:
+          type: string
+
+    CompareResult:
+      type: object
+      required: [a, b, summary, winner]
+      properties:
+        a:
+          $ref: "#/components/schemas/CompareScanResult"
+        b:
+          $ref: "#/components/schemas/CompareScanResult"
+        summary:
+          type: string
+        winner:
+          type: string
+          enum: [a, b, tie]
+
+    UpdateProfileInput:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+          minLength: 2
+          maxLength: 100
+
+    ChangePasswordInput:
+      type: object
+      required: [currentPassword, newPassword]
+      properties:
+        currentPassword:
+          type: string
+          minLength: 1
+        newPassword:
+          type: string
+          minLength: 8
+
+    AdminAnalytics:
+      type: object
+      required: [totalUsers, totalScans, urlScans, emailScans, highRiskCount, suspiciousCount, safeCount, scansToday, scansThisWeek, topThreats, dailyScans]
+      properties:
+        totalUsers:
+          type: integer
+        totalScans:
+          type: integer
+        urlScans:
+          type: integer
+        emailScans:
+          type: integer
+        highRiskCount:
+          type: integer
+        suspiciousCount:
+          type: integer
+        safeCount:
+          type: integer
+        scansToday:
+          type: integer
+        scansThisWeek:
+          type: integer
+        topThreats:
+          type: array
+          items:
+            $ref: "#/components/schemas/ThreatEntry"
+        dailyScans:
+          type: array
+          items:
+            $ref: "#/components/schemas/DailyCount"

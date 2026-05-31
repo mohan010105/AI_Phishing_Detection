@@ -1,0 +1,513 @@
+Perform a COMPLETE DOUBLE-PASS DEBUGGING AND STABILIZATION PROCESS for the entire AI Phishing Detection Platform.
+
+IMPORTANT:
+This is NOT a normal debug.
+
+You must:
+
+1. Debug the entire application once
+2. Rebuild/fix unstable areas
+3. Debug the entire application AGAIN
+4. Verify production readiness
+
+The goal is to make the project:
+
+* fully stable
+* production-ready
+* deployment-safe
+* Vercel-compatible
+* bug-free
+* TypeScript-safe
+* middleware-safe
+* authentication-safe
+
+DO NOT skip any files.
+DO NOT skip warnings.
+DO NOT ignore console errors.
+DO NOT leave temporary fixes.
+DO NOT leave placeholder code.
+DO NOT leave broken imports.
+
+Perform FULL APPLICATION AUDIT.
+
+---
+
+## FIRST DEBUGGING PASS
+
+---
+
+## STEP 1 — SCAN ENTIRE PROJECT
+
+Analyze the ENTIRE codebase.
+
+Check:
+
+* frontend
+* backend
+* middleware
+* APIs
+* authentication
+* dashboard
+* scanner
+* Supabase integration
+* deployment config
+* environment variables
+* TypeScript configs
+* routing
+
+Detect:
+
+* runtime errors
+* TypeScript errors
+* hydration issues
+* missing imports
+* broken exports
+* circular dependencies
+* API failures
+* auth issues
+* middleware issues
+* async issues
+* build issues
+* deployment issues
+
+---
+
+## STEP 2 — FIX TYPESCRIPT ERRORS
+
+Fix ALL:
+
+* type mismatches
+* undefined types
+* missing interfaces
+* invalid props
+* invalid async types
+* incorrect React types
+* Axios typing issues
+* Zustand typing issues
+
+Ensure:
+npm run build passes with ZERO TypeScript errors.
+
+---
+
+## STEP 3 — FIX IMPORT/EXPORT ISSUES
+
+Fix:
+
+* broken imports
+* wrong paths
+* alias issues
+* duplicate exports
+* invalid module references
+* missing dependencies
+
+Ensure:
+
+* all imports resolve correctly
+* no module-not-found errors remain
+
+---
+
+## STEP 4 — DEBUG AUTHENTICATION SYSTEM
+
+Fully test:
+
+* register
+* login
+* logout
+* session persistence
+* protected routes
+* middleware auth
+* token refresh
+* Supabase auth integration
+
+Fix:
+
+* redirect loops
+* expired token issues
+* invalid sessions
+* middleware conflicts
+* auth race conditions
+
+Ensure:
+
+* refresh works correctly
+* sessions persist correctly
+* protected routes work in production
+
+---
+
+## STEP 5 — DEBUG API ROUTES
+
+Test ALL APIs:
+
+POST /api/auth/register
+POST /api/auth/login
+GET /api/auth/profile
+
+POST /api/scan/url
+POST /api/scan/email
+GET /api/scan/history
+
+GET /api/admin/users
+GET /api/admin/reports
+GET /api/admin/analytics
+
+Fix:
+
+* validation failures
+* bad responses
+* API crashes
+* timeout issues
+* incorrect status codes
+* malformed JSON
+* middleware failures
+
+Ensure:
+
+* consistent API responses
+* production-safe APIs
+
+---
+
+## STEP 6 — DEBUG URL DETECTION ENGINE
+
+Test:
+
+* HTTPS detection
+* phishing keyword detection
+* domain analysis
+* shortened URL detection
+* VirusTotal integration
+* Google Safe Browsing integration
+
+Fix:
+
+* incorrect scoring
+* API failures
+* parsing issues
+* false positives
+* unstable calculations
+
+Ensure:
+
+* accurate risk scoring
+* stable API responses
+* proper threat classification
+
+---
+
+## STEP 7 — DEBUG EMAIL ANALYZER
+
+Test:
+
+* phishing keyword detection
+* urgency detection
+* suspicious links
+* risk scoring
+* recommendations
+
+Fix:
+
+* detection bugs
+* parser issues
+* incorrect indicators
+* response formatting
+
+Ensure:
+
+* stable phishing analysis
+* clean formatted responses
+
+---
+
+## STEP 8 — DEBUG DATABASE INTEGRATION
+
+Check:
+
+* Supabase connection
+* RLS policies
+* table relationships
+* insert queries
+* update queries
+* scan history storage
+* authentication tables
+
+Fix:
+
+* permission issues
+* query failures
+* duplicate records
+* auth sync issues
+
+Ensure:
+
+* database works correctly in production
+
+---
+
+## STEP 9 — DEBUG FRONTEND UI
+
+Check:
+
+* responsive design
+* hydration
+* animations
+* routing
+* dashboard
+* sidebar
+* scanner pages
+* charts
+* loading states
+
+Fix:
+
+* hydration mismatches
+* layout shifts
+* broken UI
+* animation issues
+* mobile responsiveness
+
+Ensure:
+
+* modern polished UI
+* stable frontend rendering
+
+---
+
+## STEP 10 — DEBUG FRONTEND ↔ BACKEND CONNECTION
+
+Test:
+
+* Axios services
+* token passing
+* API calls
+* auth headers
+* loading states
+* error handling
+
+Fix:
+
+* CORS issues
+* invalid tokens
+* request failures
+* interceptor bugs
+* duplicate requests
+
+Ensure:
+
+* stable frontend/backend communication
+
+---
+
+## STEP 11 — DEBUG MIDDLEWARE
+
+Test:
+
+* middleware.ts
+* auth middleware
+* admin middleware
+* route protection
+* redirect handling
+
+Fix:
+
+* redirect loops
+* middleware crashes
+* route conflicts
+* unauthorized access bugs
+
+Ensure:
+
+* middleware works in production on Vercel
+
+---
+
+## STEP 12 — DEBUG DEPLOYMENT CONFIG
+
+Check:
+
+* vercel.json
+* rewrites
+* App Router
+* environment variables
+* middleware deployment
+* API deployment
+
+Fix:
+
+* 404 refresh issues
+* deployment crashes
+* route failures
+* middleware failures
+
+Ensure:
+
+* production deployment works correctly
+
+---
+
+## STEP 13 — PERFORMANCE OPTIMIZATION
+
+Optimize:
+
+* API calls
+* renders
+* charts
+* database queries
+* bundle size
+* loading states
+
+Fix:
+
+* unnecessary rerenders
+* slow requests
+* memory leaks
+* duplicate API calls
+
+---
+
+## STEP 14 — SECURITY AUDIT
+
+Check:
+
+* JWT handling
+* token storage
+* protected routes
+* input sanitization
+* XSS prevention
+* SQL injection prevention
+* secure headers
+
+Fix:
+
+* vulnerabilities
+* insecure requests
+* unsafe rendering
+
+---
+
+## SECOND DEBUGGING PASS
+
+IMPORTANT:
+After completing the first debugging pass:
+
+RUN A SECOND FULL DEBUGGING PASS.
+
+Re-test EVERYTHING again.
+
+---
+
+## STEP 15 — SECOND PASS FULL APPLICATION TEST
+
+Re-test:
+
+* frontend
+* backend
+* APIs
+* authentication
+* dashboard
+* scanner
+* middleware
+* database
+* deployment config
+
+Ensure:
+
+* no regressions
+* no hidden bugs
+* no unstable fixes
+
+---
+
+## STEP 16 — BUILD VALIDATION
+
+Run and verify:
+
+npm install
+npm run dev
+npm run build
+
+Fix ALL:
+
+* build errors
+* warnings
+* deployment issues
+* TypeScript issues
+* hydration warnings
+
+Ensure:
+
+* ZERO critical warnings remain
+
+---
+
+## STEP 17 — PRODUCTION DEPLOYMENT TEST
+
+Simulate Vercel production environment.
+
+Test:
+
+* refresh on protected routes
+* auth persistence
+* scanner APIs
+* middleware behavior
+* environment variables
+* deployment stability
+
+Fix:
+
+* Vercel-specific issues
+* edge middleware issues
+* routing issues
+
+---
+
+## STEP 18 — FINAL STABILIZATION
+
+Clean entire codebase.
+
+Remove:
+
+* unused code
+* dead imports
+* console spam
+* duplicate utilities
+* temporary fixes
+
+Optimize:
+
+* architecture
+* readability
+* maintainability
+
+---
+
+## FINAL OUTPUT REQUIREMENTS
+
+Ensure the application becomes:
+
+1. Fully production-ready
+2. Stable in Replit
+3. Stable in Vercel
+4. TypeScript-safe
+5. Middleware-safe
+6. Authentication-safe
+7. API-safe
+8. Database-safe
+9. Deployment-safe
+10. Mobile responsive
+11. Security hardened
+12. Performance optimized
+
+IMPORTANT:
+
+* Do NOT stop after one debug pass
+* Debug EVERYTHING twice
+* Fix ALL warnings
+* Fix ALL errors
+* Fix ALL unstable code
+* Ensure NO placeholder logic remains
+* Ensure NO unfinished integrations remain
+
+The application must be fully stable and deployable after this process.

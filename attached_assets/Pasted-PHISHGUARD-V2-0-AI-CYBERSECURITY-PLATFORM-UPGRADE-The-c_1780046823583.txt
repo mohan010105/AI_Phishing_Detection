@@ -1,0 +1,439 @@
+PHISHGUARD V2.0 — AI CYBERSECURITY PLATFORM UPGRADE
+
+The core application is already fully functional.
+
+DO NOT rebuild existing features.
+
+DO NOT modify stable functionality unless necessary.
+
+Extend the existing platform with the following advanced Tier 1 and Tier 3 features while maintaining backward compatibility.
+
+IMPORTANT:
+
+* Preserve all existing APIs
+* Preserve authentication
+* Preserve dashboard functionality
+* Preserve scan history
+* Preserve Supabase integration
+* Preserve deployment configuration
+
+All new features must integrate seamlessly with the existing architecture.
+
+====================================================
+FEATURE 1 — AI THREAT EXPLANATION ENGINE
+========================================
+
+Objective:
+Convert technical detection results into plain-English explanations.
+
+Current Output:
+
+Risk Score: 82
+Status: HIGH_RISK
+
+New Output:
+
+"This URL appears dangerous because it contains phishing-related keywords, has a suspicious domain structure, and was flagged by external security intelligence sources."
+
+Implement:
+
+1. Explanation Engine Service
+2. Threat Explanation Generator
+3. Risk Summary Generator
+4. User-Friendly Recommendation Generator
+
+Create:
+
+backend/services/aiThreatExplanationService.ts
+
+Functions:
+
+generateThreatExplanation()
+generateRiskSummary()
+generateRecommendation()
+
+Output Levels:
+
+Technical Summary
+Executive Summary
+Beginner-Friendly Summary
+
+Store generated explanations in database.
+
+====================================================
+FEATURE 2 — AI THREAT REPORT GENERATOR
+======================================
+
+Generate detailed AI-powered reports.
+
+Create:
+
+Report Sections:
+
+1. Scan Overview
+2. Threat Indicators
+3. Risk Assessment
+4. Recommended Actions
+5. Security Best Practices
+
+Support:
+
+PDF Export
+JSON Export
+CSV Export
+
+Create:
+
+backend/services/reportGenerator.ts
+
+Frontend:
+
+Threat Report Viewer
+Download PDF Button
+Download JSON Button
+Download CSV Button
+
+====================================================
+FEATURE 3 — QR CODE PHISHING SCANNER
+====================================
+
+Allow users to upload QR codes.
+
+Process:
+
+Upload QR Image
+↓
+Extract URL
+↓
+Run Existing Detection Engine
+↓
+Generate Threat Report
+
+Implement:
+
+QR Upload Component
+QR Decoder Service
+Risk Analysis Integration
+
+Create:
+
+frontend/components/scanner/QRScanner.tsx
+
+backend/services/qrScannerService.ts
+
+Supported Formats:
+
+PNG
+JPG
+JPEG
+WEBP
+
+Display:
+
+Extracted URL
+Risk Score
+Threat Indicators
+Recommendation
+
+====================================================
+FEATURE 4 — WEBSITE SCREENSHOT ANALYZER
+=======================================
+
+Allow users to upload screenshots of suspicious websites.
+
+Process:
+
+Upload Screenshot
+↓
+OCR Extraction
+↓
+Keyword Analysis
+↓
+Brand Impersonation Detection
+↓
+Threat Report
+
+Implement:
+
+Image Upload UI
+OCR Service
+Threat Detection Pipeline
+
+Create:
+
+frontend/components/scanner/ScreenshotAnalyzer.tsx
+
+backend/services/ocrAnalysisService.ts
+
+Detect:
+
+Fake login forms
+Banking scams
+Credential theft prompts
+Brand impersonation
+
+Display:
+
+Detected Text
+Risk Score
+Threat Indicators
+Recommendations
+
+====================================================
+FEATURE 5 — AI SECURITY ASSISTANT
+=================================
+
+Build a chatbot inside the platform.
+
+Users can ask:
+
+"Why is this URL dangerous?"
+
+"How can I identify phishing emails?"
+
+"Explain this threat."
+
+Integrate:
+
+OpenAI API or Gemini API
+
+Create:
+
+backend/services/aiAssistantService.ts
+
+Frontend:
+
+Security Assistant Page
+
+Features:
+
+Chat Interface
+Conversation History
+Threat Explanation Mode
+Cybersecurity Education Mode
+
+Store chat history.
+
+====================================================
+FEATURE 6 — AI EMAIL EXPLANATION ENGINE
+=======================================
+
+After email analysis:
+
+Current:
+
+HIGH_RISK
+
+New:
+
+"This email attempts to create urgency and pressure the recipient into revealing sensitive information."
+
+Generate:
+
+Threat Explanation
+Psychological Manipulation Analysis
+Recommended User Actions
+
+Create:
+
+backend/services/emailExplanationService.ts
+
+====================================================
+FEATURE 7 — AI THREAT SUMMARY ENGINE
+====================================
+
+Generate three summaries:
+
+1. Technical Summary
+2. Executive Summary
+3. Beginner Summary
+
+Example:
+
+Technical:
+"URL contains multiple phishing indicators."
+
+Executive:
+"High probability of credential theft."
+
+Beginner:
+"This website may try to steal your password."
+
+Create:
+
+backend/services/threatSummaryEngine.ts
+
+====================================================
+FEATURE 8 — DASHBOARD ENHANCEMENTS
+==================================
+
+Add new dashboard widgets.
+
+Widgets:
+
+AI Threat Insights
+Recent Threat Summaries
+QR Scan Statistics
+Screenshot Scan Statistics
+AI Assistant Usage Metrics
+
+Add charts:
+
+Threat Categories
+Threat Sources
+Detection Accuracy
+
+====================================================
+FEATURE 9 — DATABASE UPDATES
+============================
+
+Create new tables:
+
+ai_explanations
+assistant_chats
+qr_scans
+screenshot_scans
+
+Add:
+
+Indexes
+Relationships
+RLS Policies
+
+Generate:
+
+migration.sql updates
+
+====================================================
+FEATURE 10 — API DEVELOPMENT
+============================
+
+Create APIs:
+
+POST /api/scan/qr
+POST /api/scan/screenshot
+
+POST /api/ai/explain
+
+POST /api/assistant/chat
+
+GET /api/reports/:id
+
+GET /api/threat-summary/:id
+
+Implement:
+
+Validation
+Authentication
+Rate Limiting
+Error Handling
+
+====================================================
+FEATURE 11 — FRONTEND INTEGRATION
+=================================
+
+Add new pages:
+
+/dashboard/qr-scanner
+
+/dashboard/screenshot-analyzer
+
+/dashboard/ai-assistant
+
+/dashboard/reports
+
+/dashboard/threat-insights
+
+Update Sidebar:
+
+Dashboard
+URL Scanner
+Email Analyzer
+QR Scanner
+Screenshot Analyzer
+Threat Reports
+AI Assistant
+Scan History
+Profile
+Settings
+
+====================================================
+FEATURE 12 — SECURITY & PERFORMANCE
+===================================
+
+Implement:
+
+Upload Validation
+File Size Limits
+Image Sanitization
+AI Rate Limiting
+Caching
+Lazy Loading
+Optimized Queries
+
+====================================================
+FEATURE 13 — PRODUCTION HARDENING
+=================================
+
+After implementation:
+
+Perform FULL DOUBLE DEBUG PASS.
+
+Verify:
+
+Authentication
+Dashboard
+URL Scanner
+Email Analyzer
+QR Scanner
+Screenshot Analyzer
+AI Assistant
+Reports
+Exports
+Middleware
+Supabase
+Vercel Deployment
+
+Fix:
+
+TypeScript Errors
+Hydration Errors
+Build Failures
+Import Issues
+API Failures
+
+====================================================
+FINAL REQUIREMENTS
+==================
+
+Ensure:
+
+npm install works
+
+npm run dev works
+
+npm run build works
+
+Application deploys successfully on Vercel.
+
+No 404 refresh issues.
+
+No broken routes.
+
+No middleware failures.
+
+No authentication failures.
+
+No placeholder code.
+
+No unfinished integrations.
+
+Generate production-quality implementation suitable for:
+
+* Final Year Major Project
+* Portfolio Showcase
+* Technical Interviews
+* Hackathons
+* Cybersecurity Demonstrations
+
+This upgrade should transform PhishGuard into a complete AI-Powered Cybersecurity Intelligence Platform.

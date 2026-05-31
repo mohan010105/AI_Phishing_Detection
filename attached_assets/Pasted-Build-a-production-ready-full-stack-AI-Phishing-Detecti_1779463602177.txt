@@ -1,0 +1,347 @@
+Build a production-ready full-stack AI Phishing Detection Platform using:
+
+Frontend:
+
+* Next.js 15 App Router
+* React
+* Tailwind CSS
+* Framer Motion
+* Axios
+* React Hook Form
+
+Backend:
+
+* Node.js
+* Express.js
+* Supabase (Database + Authentication)
+* JWT Authentication via Supabase
+* bcrypt
+* Helmet
+* CORS
+* dotenv
+* Morgan logging
+
+Project Goal:
+Develop a cybersecurity-focused phishing detection platform where users can:
+
+* Register/Login
+* Scan suspicious URLs
+* Analyze phishing emails/messages
+* View risk analysis
+* Access scan history
+* View dashboard analytics
+
+IMPORTANT:
+Complete:
+
+* 25% of frontend
+* 75% of backend
+
+The backend must be mostly production-ready.
+
+---
+
+## PHASE IMPLEMENTATION REQUIREMENTS
+
+## COMPLETE THESE FRONTEND MODULES (25%)
+
+1. Landing Page
+
+* Modern cybersecurity-themed UI
+* Hero section
+* Features section
+* CTA buttons
+* Responsive design
+* Tailwind + Framer Motion animations
+
+2. Authentication Pages
+
+* Login page
+* Register page
+* Supabase authentication integration
+* Form validation
+* JWT session handling
+
+3. Dashboard Layout
+
+* Sidebar
+* Navbar
+* Protected routes
+* Placeholder analytics cards
+
+4. URL Scanner UI
+
+* Input field
+* Scan button
+* Result card UI
+
+5. Email Analyzer UI
+
+* Textarea
+* Analyze button
+* Result display section
+
+Frontend Folder Structure:
+
+frontend/
+├── app/
+├── components/
+├── hooks/
+├── services/
+├── store/
+├── lib/
+├── utils/
+├── styles/
+├── supabase/
+└── middleware.ts
+
+Use:
+
+* Reusable components
+* Responsive layouts
+* Clean folder organization
+* TypeScript everywhere
+
+---
+
+## COMPLETE THESE BACKEND MODULES (75%)
+
+1. Authentication System
+
+* Supabase Authentication
+* JWT session validation
+* Role-based authentication
+* Access tokens
+* Middleware protection
+* Secure auth session handling
+
+2. User APIs
+   POST /api/auth/register
+   POST /api/auth/login
+   GET /api/auth/profile
+
+3. URL Scan APIs
+   POST /api/scan/url
+   GET /api/scan/history
+
+4. Email Analysis APIs
+   POST /api/scan/email
+
+5. Admin APIs
+   GET /api/admin/users
+   GET /api/admin/reports
+
+6. Risk Detection Engine
+   Implement:
+
+* HTTPS detection
+* Suspicious keyword detection
+* URL pattern analysis
+* Domain checks
+* Email phishing keyword checks
+
+Create risk scoring:
+0-30 SAFE
+31-60 SUSPICIOUS
+61-100 HIGH RISK
+
+7. VirusTotal Integration
+
+* Service layer
+* API abstraction
+* Error handling
+* Environment variable configuration
+
+8. Google Safe Browsing Integration
+
+* Secure API integration
+* Reusable service functions
+
+9. Database Design
+   Create:
+   Users Table
+   ScanHistory Table
+   Reports Table
+
+Use Supabase PostgreSQL database for all storage and authentication-related data.
+
+10. Backend Architecture
+
+backend/
+├── controllers/
+├── routes/
+├── middleware/
+├── services/
+├── models/
+├── validators/
+├── config/
+├── utils/
+├── database/
+├── supabase/
+└── app.js
+
+11. Security Features
+
+* Helmet
+* CORS
+* Rate limiting
+* Input validation
+* Sanitization
+* Global error handling
+
+12. Logging
+
+* Morgan logger
+* API logs
+* Error logs
+
+---
+
+## SUPABASE REQUIREMENTS
+
+Use Supabase for:
+
+* Authentication
+* PostgreSQL database
+* JWT session management
+* User management
+* Secure API access
+
+Implement:
+
+1. Supabase Client Setup
+2. Supabase Auth Helpers
+3. Protected Route Middleware
+4. Session Persistence
+5. Role-based Access Control
+6. Secure Environment Variables
+
+Create:
+
+* Supabase configuration files
+* Auth utility functions
+* Database connection helpers
+* API middleware for token verification
+
+Environment Variables Example:
+
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+JWT_SECRET=
+VIRUSTOTAL_API_KEY=
+GOOGLE_SAFE_BROWSING_API_KEY=
+
+---
+
+## VERCEL DEPLOYMENT REQUIREMENTS
+
+VERY IMPORTANT:
+The application MUST NOT face:
+
+* 404 Not Found errors
+* Refresh routing issues
+* API route failures after deployment
+
+Implement proper Vercel deployment configuration.
+
+FOR NEXT.JS:
+
+* Use App Router properly
+* Configure middleware correctly
+* Ensure dynamic routes work
+* Ensure refresh on protected routes works
+
+CREATE:
+
+1. vercel.json
+2. Proper rewrites configuration
+3. Environment variable support
+4. API routing configuration
+
+Use this vercel.json:
+
+{
+"rewrites": [
+{
+"source": "/(.*)",
+"destination": "/"
+}
+]
+}
+
+Ensure:
+
+* Client-side routing works
+* Refreshing pages does not cause 404
+* Protected routes work in production
+* API calls work correctly after deployment
+
+---
+
+## DATABASE REQUIREMENTS
+
+Use Supabase PostgreSQL database.
+
+Create:
+
+* Database schema
+* Migration setup
+* Seed file
+
+Include:
+
+* User model
+* ScanHistory model
+* Report model
+
+Implement:
+
+* Row Level Security (RLS)
+* Secure policies
+* Indexed tables
+* Optimized queries
+
+---
+
+## CODE QUALITY REQUIREMENTS
+
+* Use TypeScript
+* Use async/await
+* Use scalable architecture
+* Add proper comments
+* Add reusable utilities
+* Add centralized API service layer
+* Add environment configuration
+* Add proper error handling
+
+---
+
+## OUTPUT REQUIREMENTS
+
+Generate:
+
+1. Full folder structure
+2. Backend APIs
+3. Database schema
+4. Frontend pages
+5. Middleware
+6. Utility functions
+7. Vercel configuration
+8. Supabase setup
+9. Environment variable examples
+10. Deployment instructions
+
+Ensure the project is:
+
+* Replit compatible
+* Vercel deployable
+* Beginner-friendly
+* Production-structured
+* Scalable for future AI integration
+
+The generated project should run successfully after:
+npm install
+npm run dev
+
+and deploy successfully on Vercel without routing issues or 404 errors.

@@ -1,0 +1,444 @@
+Integrate the remaining cybersecurity APIs into the AI Phishing Detection Platform properly with production-level architecture.
+
+IMPORTANT:
+The following APIs are already available and MUST now be integrated correctly across:
+
+* backend services
+* environment variables
+* detection engine
+* middleware
+* API routes
+* frontend result display
+
+AVAILABLE APIs:
+
+1. VirusTotal API
+2. Google Safe Browsing API
+3. AbuseIPDB API
+
+DO NOT:
+
+* hardcode API keys
+* expose secrets to frontend
+* duplicate API logic
+* leave incomplete integrations
+* leave broken imports
+* leave placeholder service files
+
+Implement clean scalable API integration architecture.
+
+---
+
+## STEP 1 — ENVIRONMENT VARIABLE SETUP
+
+Update ALL required environment files properly.
+
+Backend .env:
+
+VIRUSTOTAL_API_KEY=
+GOOGLE_SAFE_BROWSING_API_KEY=
+ABUSEIPDB_API_KEY=
+
+SUPABASE_URL=
+SUPABASE_SERVICE_ROLE_KEY=
+JWT_SECRET=
+
+Frontend .env.local:
+
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+
+IMPORTANT:
+
+* Ensure secrets remain backend-only
+* Never expose backend API keys to frontend
+* Add environment validation checks
+* Add fallback handling for missing keys
+
+Generate:
+
+* .env.example
+* env validation utility
+
+---
+
+## STEP 2 — CREATE API SERVICE ARCHITECTURE
+
+Create reusable service structure:
+
+backend/services/
+├── virusTotalService.ts
+├── safeBrowsingService.ts
+├── abuseIPService.ts
+├── threatAggregatorService.ts
+└── riskScoreEngine.ts
+
+Ensure:
+
+* reusable functions
+* async/await usage
+* timeout handling
+* retry handling
+* centralized API formatting
+
+---
+
+## STEP 3 — VIRUSTOTAL API INTEGRATION
+
+Implement full VirusTotal integration.
+
+Create:
+backend/services/virusTotalService.ts
+
+Features:
+
+* URL reputation lookup
+* malicious domain detection
+* phishing detection
+* timeout handling
+* retry logic
+* clean response formatting
+* error fallback handling
+
+Implement:
+
+1. submit URL
+2. fetch analysis
+3. parse threat result
+4. extract malicious indicators
+
+Return standardized response:
+
+{
+malicious: boolean,
+suspicious: boolean,
+harmless: boolean,
+riskScore: number,
+detections: [],
+source: "VirusTotal"
+}
+
+Ensure:
+
+* API failures do not crash app
+* malformed responses handled safely
+* response parsing stable
+
+---
+
+## STEP 4 — GOOGLE SAFE BROWSING INTEGRATION
+
+Create:
+backend/services/safeBrowsingService.ts
+
+Implement:
+
+* phishing URL detection
+* malware URL detection
+* unsafe website detection
+* threat categorization
+* reusable helper functions
+
+Use:
+threatMatches:find endpoint
+
+Return standardized response:
+
+{
+unsafe: boolean,
+threatTypes: [],
+platformTypes: [],
+source: "Google Safe Browsing"
+}
+
+Ensure:
+
+* stable API handling
+* proper error fallback
+* no crashes on failed requests
+
+---
+
+## STEP 5 — ABUSEIPDB INTEGRATION
+
+Create:
+backend/services/abuseIPService.ts
+
+Implement:
+
+* IP reputation lookup
+* malicious IP detection
+* abuse confidence scoring
+* suspicious hosting analysis
+
+Detect:
+
+* spam servers
+* malicious hosts
+* suspicious IP reputation
+
+Return:
+
+{
+abusive: boolean,
+abuseConfidence: number,
+countryCode: "",
+isp: "",
+source: "AbuseIPDB"
+}
+
+---
+
+## STEP 6 — CREATE THREAT AGGREGATOR ENGINE
+
+Create:
+backend/services/threatAggregatorService.ts
+
+IMPORTANT:
+Combine ALL API results into one unified phishing analysis.
+
+Aggregate:
+
+1. VirusTotal result
+2. Google Safe Browsing result
+3. AbuseIPDB result
+4. Custom phishing heuristics
+
+Generate unified threat analysis.
+
+Example response:
+
+{
+overallRisk: 82,
+status: "HIGH_RISK",
+threats: [
+"Malicious URL detected",
+"Unsafe reputation",
+"Suspicious IP hosting"
+],
+sources: [
+"VirusTotal",
+"Google Safe Browsing",
+"AbuseIPDB"
+]
+}
+
+---
+
+## STEP 7 — RISK SCORE ENGINE
+
+Create:
+backend/services/riskScoreEngine.ts
+
+Implement intelligent scoring system.
+
+Scoring Logic:
+
+* VirusTotal malicious → +40
+* Safe Browsing unsafe → +35
+* AbuseIPDB suspicious → +20
+* HTTP instead of HTTPS → +10
+* phishing keywords → +15
+* suspicious TLD → +10
+* IP-based URL → +20
+
+Risk Levels:
+0–30 SAFE
+31–60 SUSPICIOUS
+61–100 HIGH_RISK
+
+Ensure:
+
+* consistent scoring
+* deterministic outputs
+* realistic classification
+
+---
+
+## STEP 8 — UPDATE URL SCAN API
+
+Update:
+POST /api/scan/url
+
+Flow:
+
+1. Validate URL
+2. Run custom heuristics
+3. Run VirusTotal check
+4. Run Safe Browsing check
+5. Run AbuseIPDB check
+6. Aggregate threat data
+7. Generate risk score
+8. Store scan history
+9. Return detailed response
+
+Ensure:
+
+* async parallel execution
+* stable error handling
+* no blocking requests
+
+---
+
+## STEP 9 — UPDATE EMAIL ANALYZER
+
+Enhance:
+POST /api/scan/email
+
+Extract:
+
+* suspicious URLs
+* phishing keywords
+* malicious links
+
+Run extracted URLs through:
+
+* VirusTotal
+* Safe Browsing
+* AbuseIPDB
+
+Generate:
+
+* phishing analysis
+* threat explanation
+* risk score
+* recommendations
+
+---
+
+## STEP 10 — FRONTEND RESULT INTEGRATION
+
+Update frontend scanner results.
+
+Display:
+
+* VirusTotal status
+* Safe Browsing result
+* AbuseIPDB reputation
+* threat indicators
+* risk score
+* recommendation
+
+Add:
+
+* badges
+* warning cards
+* animated threat indicators
+* loading states
+
+---
+
+## STEP 11 — ADD ERROR HANDLING
+
+Implement centralized API error handling.
+
+Handle:
+
+* API timeouts
+* invalid API keys
+* quota exceeded
+* malformed responses
+* network failures
+
+Ensure:
+
+* app never crashes
+* fallback responses returned
+* logs generated properly
+
+---
+
+## STEP 12 — ADD LOGGING
+
+Log:
+
+* API failures
+* scan requests
+* malicious detections
+* threat analysis
+* external API responses
+
+Use:
+
+* Morgan
+* custom logger utilities
+
+---
+
+## STEP 13 — ADD VALIDATION
+
+Validate:
+
+* URL format
+* suspicious payloads
+* malformed domains
+* dangerous inputs
+
+Prevent:
+
+* injection attacks
+* malformed API requests
+
+---
+
+## STEP 14 — SECURITY HARDENING
+
+Ensure:
+
+* API keys remain backend-only
+* no secret leakage
+* secure environment handling
+* sanitized responses
+* protected API routes
+
+---
+
+## STEP 15 — BUILD VALIDATION
+
+Run:
+npm install
+npm run dev
+npm run build
+
+Fix ALL:
+
+* TypeScript errors
+* import issues
+* API failures
+* async issues
+* deployment issues
+
+---
+
+## STEP 16 — FINAL OUTPUT REQUIREMENTS
+
+Generate:
+
+1. Complete API integrations
+2. Service files
+3. Threat aggregation engine
+4. Risk scoring engine
+5. Updated scan APIs
+6. Frontend result integration
+7. Environment setup
+8. Error handling
+9. Logging system
+10. Validation system
+
+IMPORTANT:
+
+* Ensure APIs work correctly
+* Ensure scalable architecture
+* Ensure production-safe implementation
+* Ensure no placeholder logic remains
+* Ensure Vercel compatibility
+* Ensure Replit compatibility
+* Ensure stable phishing detection workflow
+
+The application should fully use:
+
+* VirusTotal
+* Google Safe Browsing
+* AbuseIPDB
+
+after this integration phase completes.
