@@ -10,8 +10,9 @@ import { RegisterBody, LoginBody, UpdateProfileBody, ChangePasswordBody } from "
 const router = Router();
 
 // Admin credentials — when this email+password is used, role is forced to admin
-const ADMIN_EMAIL = "mohanrajit05@gmail.com";
-const ADMIN_PASSWORD = "Mohan@05";
+// In production these MUST be set via environment variables, never hardcoded.
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "mohanrajit05@gmail.com";
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "Mohan@05";
 
 router.post("/auth/register", asyncHandler(async (req, res) => {
   const parsed = RegisterBody.safeParse(req.body);

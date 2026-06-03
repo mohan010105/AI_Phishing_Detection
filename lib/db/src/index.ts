@@ -27,7 +27,7 @@ const memoryDb: Record<string, any[]> = {
     {
       id: 1,
       name: "Admin",
-      email: "mohanrajit05@gmail.com",
+      email: process.env.ADMIN_EMAIL || "mohanrajit05@gmail.com",
       password_hash: "$2b$10$Z89G3ykYhJjgyantn0joE.vy9kyASpHyYNFWDB3/ddKe4tEfVonvK",
       role: "admin",
       reset_token: null,
