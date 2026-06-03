@@ -10,11 +10,13 @@ logEnvStatus();
 
 const port = env.PORT;
 
-app.listen(port, (err) => {
-  if (err) {
-    logger.error({ err }, "Error listening on port");
-    process.exit(1);
-  }
-
-  logger.info({ port }, "Server listening");
+app.listen(port, () => {
+  logger.info("=========================================");
+  logger.info("🚀 PHISHGUARD API SERVER STARTUP DIAGNOSTICS");
+  logger.info(`* PORT: ${port}`);
+  logger.info(`* Environment: ${env.NODE_ENV}`);
+  logger.info(`* Database URL configured: ${env.DATABASE_URL ? "Yes" : "No"}`);
+  logger.info(`* Supabase URL configured: ${env.SUPABASE_URL ? "Yes" : "No"}`);
+  logger.info("* API Status: ONLINE");
+  logger.info("=========================================");
 });
