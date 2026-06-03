@@ -366,7 +366,7 @@ class RobustPool {
       actualRowMode = text.rowMode;
     }
 
-    if (useFallback) {
+    const executeMock = () => {
       try {
         const result = mockQuery(actualText, actualValues, actualRowMode);
         if (actualCallback) {
@@ -379,9 +379,49 @@ class RobustPool {
         }
         return Promise.reject(err);
       }
+    };
+
+    if (useFallback) {
+      return executeMock();
     }
 
-    return this.pool.query(text, values, callback);
+    try {
+      const promise = this.pool.query(text, values, callback) as any;
+      if (promise && typeof promise.catch === 'function') {
+        return promise.catch((err: any) => {
+          const isConnectionError = 
+            err.code === 'ENOTFOUND' || 
+            err.code === 'ECONNREFUSED' || 
+            err.code === 'ETIMEDOUT' || 
+            err.message?.includes('timeout') ||
+            err.message?.includes('connection') ||
+            err.message?.includes('unreachable');
+          
+          if (isConnectionError) {
+            console.warn("⚠️ [Database Query Warning] Connection failed dynamically. Activating In-Memory Fallback.");
+            useFallback = true;
+            return executeMock();
+          }
+          throw err;
+        });
+      }
+      return promise;
+    } catch (err: any) {
+      const isConnectionError = 
+        err.code === 'ENOTFOUND' || 
+        err.code === 'ECONNREFUSED' || 
+        err.code === 'ETIMEDOUT' || 
+        err.message?.includes('timeout') ||
+        err.message?.includes('connection') ||
+        err.message?.includes('unreachable');
+      
+      if (isConnectionError) {
+        console.warn("⚠️ [Database Query Warning] Connection failed synchronously. Activating In-Memory Fallback.");
+        useFallback = true;
+        return executeMock();
+      }
+      throw err;
+    }
   }
 
   connect(callback?: any) {
