@@ -2,11 +2,6 @@
   "name": "phishguard",
   "version": "1.0.0",
   "private": true,
-  "workspaces": [
-    "frontend",
-    "backend",
-    "shared"
-  ],
   "description": "PhishGuard — AI-powered Phishing Detection Platform",
   "scripts": {
     "install:all": "npm install --prefix frontend && npm install --prefix backend",
