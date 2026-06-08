@@ -1,213 +1,220 @@
-# 🛡️ PhishGuard
+# PhishGuard — AI Phishing Detection Platform
 
-### **Multi-Engine Phishing & Quishing Detection System Powered by Cognitive Intelligence Heuristics & Dynamic APIs**
-
----
-
-## 🌟 Overview
-
-**PhishGuard** is an advanced, production-grade cybersecurity intelligence platform designed to intercept, analyze, and explain digital social engineering attacks. By combining deterministic lexical heuristics, dynamic multi-database threat intelligence queries, machine vision analysis, and large language model explainers, PhishGuard protects users from sophisticated phishing, quishing (QR code manipulation), email fraud, and visual brand impersonation campaigns.
-
-PhishGuard features a high-availability design that seamlessly shifts to local SQL database mocks during cloud server outages, and routes AI chat queries to a fallback provider if rate limits are hit. Packaged as a robust monorepo utilizing React 19, TypeScript, Express, Drizzle ORM, and Supabase.
+> An AI-powered cybersecurity platform that detects phishing threats across URLs, emails, QR codes, and screenshots using VirusTotal, Google Safe Browsing, AbuseIPDB, and OpenAI.
 
 ---
 
-## ⚠️ Problem Statement
-
-Social engineering attacks represent a significant threat to global digital infrastructure. Modern threat vectors have evolved past simple email templates:
-1. **Multi-Vector Attacks**: Phishing attacks are heavily diversified across URLs, structured emails, physical QR codes (Quishing), and visual brand spoofing.
-2. **Cognitive Blindspots**: Traditional security tools output raw technical threat metrics (e.g., `Google Safe Browsing: Flagged as SOCIAL_ENGINEERING`) that confuse non-technical users.
-3. **Reactive blacklists**: Single-feed security checkers are vulnerable to zero-day domains that have not yet been blacklisted.
-
----
-
-## 💡 The Solution
-
-PhishGuard provides a proactive, multi-tier threat aggregation and explanation system:
-- **Heuristics & APIs**: Combines local lexical scanners with simultaneous queries to VirusTotal, Google Safe Browsing, and AbuseIPDB.
-- **Natural Language Explanations**: Uses Large Language Models (LLMs) to explain threat signatures to users in simple, natural language.
-- **Resilient Infrastructure**: Guarantees high availability using local database and API fallback pipelines.
-- **Unified Command Center**: Renders telemetry data, trend charts, and chat interfaces in a responsive dark-mode dashboard.
-
----
-
-## 🚀 Core Features
-
-### 🔐 1. Authentication & RBAC
-- Stateless session management using secure, signed JSON Web Tokens (JWT).
-- Secure password encryption using the **bcrypt** hashing algorithm.
-- Middleware verification to enforce standard and administrator account access bounds.
-
-### 🌐 2. URL Scanner
-- Heuristic checks scan targets for suspicious keywords, subdomains, character entropy, and age indicators.
-- Simultaneously aggregates live scoring metrics from VirusTotal, Google Safe Browsing, and AbuseIPDB.
-- Consolidates threat data into a single risk scorecard (0-100) and risk level.
-
-### 📧 3. Email Analyzer
-- Parses message content for urgency indicators, payment requests, and sensitive data prompts (e.g., SSN, credit cards).
-- Compares sender signatures against link profiles to flag mismatch anomalies.
-- Automatically extracts and scans embedded URLs.
-
-### 📱 4. QR Scanner (Quishing Defender)
-- Pre-processes images using Jimp to optimize contrast and thresholding levels.
-- Decodes QR code matrices into plain-text targets using the `jsQR` algorithm.
-- Safely evaluates decoded destination URLs before they reach a user's smartphone.
-
-### 👁️ 5. Screenshot AI (Impersonation Defender)
-- Extracts hidden layout texts from screenshots using image text recognition.
-- Uses vision LLMs to detect visual brand impersonation attempts on login screens (e.g., mimicking Google Accounts sign-in layouts).
-
-### 💬 6. Companion AI Assistant
-- Interactive cybersecurity co-pilot that explains complex threat indicators and security vocabulary.
-- Features a fallback pipeline to route chat queries to Gemini automatically if OpenAI is unavailable, guaranteeing constant uptime.
-
-### ⚖️ 7. Threat Comparison Tool
-- Runs side-by-side risk scans and outputs an AI-synthesized verdict explaining which target represents the greater security risk.
-
-### 📄 8. Actionable PDF Threat Reports
-- Generates and downloads professionally formatted PDF reports in the browser, complete with scan findings and custom incident response steps.
-
-### 📊 9. Dashboard Telemetry & Analytics
-- Renders per-user scan stats, risk category breakdowns, and weekly scan volumes using responsive charts.
-
-### ⚙️ 10. Admin Console
-- Renders central platform statistics, including 30-day telemetry trends, risk distributions, and operator tables.
-
----
-
-## 🛠️ Technology Stack
-
-| Layer | Technologies |
-| :--- | :--- |
-| **Frontend Core** | React 19, TypeScript, TailwindCSS, Radix UI, Framer Motion, Wouter Router |
-| **Backend Core** | Node.js, Express, Multer, Zod Schema Validation, Pino |
-| **Database** | PostgreSQL, Drizzle ORM, Supabase Cloud Storage |
-| **APIs** | VirusTotal API, Google Safe Browsing API, AbuseIPDB API |
-| **AI / OCR Core** | OpenAI API (GPT-4o-mini), Google Gemini API (Gemini 2.0 Flash), jsQR, Jimp OCR |
-
----
-
-## 📦 Monorepo Workspace Structure
+## Architecture
 
 ```
-workspace/
-├── artifacts/
-│   ├── api-server/         Express API backend, routes, config, and services
-│   ├── phishing-detector/  Modern React SPA frontend
-│   └── mockup-sandbox/     Visual UI sandboxing environment
-├── lib/
-│   ├── api-spec/           OpenAPI specifications
-│   ├── api-client-react/   Generated API hooks
-│   ├── api-zod/            Generated validation schemas
-│   └── db/                 PostgreSQL tables, migrations, and connections
-├── docs/                   Complete project deliverables folder
-└── README.md               Main documentation interface
+phishguard/
+├── frontend/          → React + Vite SPA (deployed to Vercel)
+├── backend/           → Express API server (deployed to Render)
+├── shared/            → Shared types, constants, and interfaces
+├── docs/              → Project documentation
+├── .gitignore
+├── package.json       → Root convenience scripts
+└── README.md
 ```
+
+### Frontend (`frontend/`)
+
+| Stack       | Details                        |
+|-------------|--------------------------------|
+| Framework   | React 19 + TypeScript          |
+| Bundler     | Vite 7                         |
+| Styling     | Tailwind CSS 4                 |
+| UI Library  | Radix UI + shadcn/ui           |
+| State       | TanStack React Query           |
+| Routing     | Wouter                         |
+| Deployment  | Vercel                         |
+
+### Backend (`backend/`)
+
+| Stack       | Details                        |
+|-------------|--------------------------------|
+| Runtime     | Node.js + TypeScript           |
+| Framework   | Express 5                      |
+| Database    | PostgreSQL via Drizzle ORM     |
+| Auth        | JWT (bcryptjs + jsonwebtoken)  |
+| AI          | OpenAI GPT-4                   |
+| APIs        | VirusTotal, Safe Browsing, AbuseIPDB |
+| Deployment  | Render                         |
+
+### Database
+
+| Platform | Details                           |
+|----------|-----------------------------------|
+| Supabase | PostgreSQL + Auth + Row-Level Security |
 
 ---
 
-## ⚙️ Environment Variables
+## Quick Start
 
-Create a `.env` file at the project root and populate these variables:
+### Prerequisites
+
+- Node.js 20+
+- npm 10+
+
+### 1. Install Dependencies
 
 ```bash
-# Server Configuration
-NODE_ENV=development
-PORT=8080
+# Install both frontend and backend
+npm run install:all
 
-# Database Persistence
-DATABASE_URL=postgresql://postgres:[YOUR-PASSWORD]@db.xxxx.supabase.co:5432/postgres
-
-# Security / Tokenization
-JWT_SECRET=your-64-character-random-hex-string
-SESSION_SECRET=your-random-session-secret
-
-# Threat Intelligence APIs
-VIRUSTOTAL_API_KEY=your-virustotal-api-key
-GOOGLE_SAFE_BROWSING_API_KEY=your-safe-browsing-key
-ABUSEIPDB_API_KEY=your-abuseipdb-key
-
-# Cognitive AI Engines
-OPENAI_API_KEY=your-openai-key
-GEMINI_API_KEY=your-gemini-key
+# Or individually:
+cd frontend && npm install
+cd backend && npm install
 ```
 
----
+### 2. Configure Environment Variables
 
-## 🚀 Quick Start Guide
+**Frontend** (`frontend/.env`):
+```env
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-key
+VITE_API_URL=                    # Leave blank for dev (Vite proxy handles it)
+```
 
-### 1. Prerequisite Installations
-- **Node.js**: v24+
-- **pnpm**: v9+ (Recommended package manager)
+**Backend** (`backend/.env`):
+```env
+DATABASE_URL=postgresql://postgres:password@db.your-project.supabase.co:5432/postgres
+JWT_SECRET=your-random-64-byte-secret
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+FRONTEND_URL=http://localhost:5173
+VIRUSTOTAL_API_KEY=your-key
+GOOGLE_SAFE_BROWSING_API_KEY=your-key
+OPENAI_API_KEY=your-key
+```
 
-### 2. Workspace Installation
-Install all monorepo dependencies and build the internal packages:
+### 3. Run Development Servers
+
 ```bash
-# Clone the repository and install dependencies
-pnpm install
+# From root — starts both frontend and backend
+npm run dev
 
-# Initialize database schemas on Supabase
-pnpm --filter "@workspace/db" db:push
-
-# Seed demo data
-pnpm --filter "@workspace/db" db:seed
+# Or individually:
+npm run dev:frontend    # http://localhost:5173
+npm run dev:backend     # http://localhost:8080
 ```
 
-### 3. Running the Development Servers
-Start both the backend API server and frontend SPA client:
+### 4. Build for Production
+
 ```bash
-# Start backend and frontend simultaneously
-pnpm dev
-```
-- **Backend API**: Running on `http://localhost:8080`
-- **Frontend Client**: Running on `http://localhost:5173`
-
-### 4. Code Quality & Builds
-```bash
-# Verify type safety across all workspaces
-pnpm run typecheck
-
-# Compile production-ready builds
-pnpm run build
+npm run build
 ```
 
 ---
 
-## 🔑 Demo Accounts
+## Features
 
-| Role | Username / Email | Password |
-| :--- | :--- | :--- |
-| **Standard Operator** | `demo@phishguard.io` | `Demo123450!!` |
-| **Security Administrator** | `admin@phishguard.io` | `Demo1234!!!123` |
-
----
-
-## 📂 Project Deliverables & Submission Package
-
-To access the complete project documentation and major project deliverables, explore the files in the **`docs/`** directory:
-
-- 📄 **[Major Project Report](docs/project_report.md)**: Academic report containing 23 chapters, including Literature Survey, Database Design, System Architecture, and Security Features.
-- 📊 **[PowerPoint Presentation Slides](docs/presentation_content.md)**: Structured slide-by-slide outlines, visuals, and presenter notes for project reviews.
-- 🔌 **[API Specifications Guide](docs/api_documentation.md)**: Reference document containing request/response schemas, JSON examples, and auth parameters.
-- 🗄️ **[Database Architecture](docs/database_documentation.md)**: Renders entity maps, table constraints, compound indexes, and custom enum definitions.
-- 🧪 **[Quality Assurance & Testing](docs/testing_documentation.md)**: Comprehensive testing tables verifying heuristics, vision scans, and system resiliency.
-- 🌐 **[Operations & Deployment Guide](docs/deployment_guide.md)**: Step-by-step guides for deploying on Vercel, Supabase, and Render.
-- 📖 **[User Manual](docs/user_manual.md)**: End-to-end user guide explaining all application scanner interfaces.
-- 🎓 **[viva Preparation Guide](docs/viva_preparation.md)**: Placement-ready prep guide containing 150 questions and answers across technical and academic topics.
-- 💼 **[GitHub Showcase Pack](docs/github_and_portfolio.md)**: Ready-to-use descriptions and posts for personal portfolios, resumes, and LinkedIn.
+| Feature              | Description                                       |
+|----------------------|---------------------------------------------------|
+| 🔗 URL Scanner       | VirusTotal + Google Safe Browsing + AI analysis   |
+| 📧 Email Scanner     | Phishing pattern detection in email content       |
+| 📱 QR Code Scanner   | Decode and analyze QR codes for malicious URLs    |
+| 📸 Screenshot AI     | AI-powered visual phishing detection              |
+| 🤖 AI Assistant      | GPT-4 powered cybersecurity chatbot               |
+| 📊 Dashboard         | Real-time threat analytics and scan history       |
+| 📝 Reports           | PDF report generation for scan results            |
+| 👤 Auth System       | JWT-based registration, login, password reset     |
+| 🛡️ Admin Console     | User management and platform-wide analytics       |
+| 🎯 Risk Scoring      | Multi-source threat intelligence risk assessment  |
 
 ---
 
-## 🔮 Future Roadmap
+## Deployment
 
-- **Browser Extension**: Real-time traffic checks directly within user browser workflows.
-- **Offline OCR Models**: Moves visual screen analysis offline to improve privacy.
-- **Active Domain Monitoring**: Automatically tracks new registrations targeting known company domains.
-- **LDAP Integration**: Single Sign-On support for corporate networks.
+### Frontend → Vercel
+
+1. Import repo to Vercel
+2. Set **Root Directory**: `frontend`
+3. Set **Framework Preset**: Vite
+4. Add environment variables:
+   - `VITE_SUPABASE_URL`
+   - `VITE_SUPABASE_ANON_KEY`
+   - `VITE_API_URL` = `https://phishguard-api.onrender.com`
+
+### Backend → Render
+
+1. Create new **Web Service** from repo
+2. Set **Root Directory**: `backend`
+3. **Build Command**: `npm install && npm run build`
+4. **Start Command**: `npm run start`
+5. Add all environment variables from `backend/.env.example`
+
+### Database → Supabase
+
+1. Create a new Supabase project
+2. Copy the `DATABASE_URL` from Settings → Database
+3. Run `npm run db:push --prefix backend` to push the schema
 
 ---
 
-## 👥 Authors
+## Project Structure — Detailed
 
-- **[Candidate Name]** — Lead Developer / Security Engineer
-- Under the guidance of **[Advisor/Professor Name]**
+```
+frontend/
+├── src/
+│   ├── components/       → React components (UI + feature)
+│   │   └── ui/           → shadcn/ui components
+│   ├── pages/            → Route pages
+│   ├── hooks/            → Custom React hooks (auth, toast, etc.)
+│   ├── services/         → API client (generated + custom-fetch)
+│   │   └── generated/    → Auto-generated API client
+│   ├── lib/              → Utility functions
+│   ├── App.tsx           → Root component + routing
+│   ├── main.tsx          → Entry point
+│   └── index.css         → Global styles
+├── public/               → Static assets
+├── package.json
+├── tsconfig.json
+├── vite.config.ts
+├── vercel.json           → Vercel deployment config
+└── .env.example
+
+backend/
+├── src/
+│   ├── routes/           → Express route handlers
+│   ├── services/         → Business logic (AI, scanning, etc.)
+│   ├── middlewares/      → Auth, error handling middleware
+│   ├── database/         → Drizzle ORM setup + schema
+│   │   └── schema/       → Database table definitions
+│   ├── config/           → Environment variable validation
+│   ├── constants/        → Backend constants
+│   ├── lib/              → Logger, utilities
+│   ├── utils/            → Helper functions
+│   ├── validation/       → Zod validation schemas
+│   ├── app.ts            → Express app setup
+│   └── index.ts          → Server entry point
+├── build.mjs             → esbuild production bundler
+├── package.json
+├── tsconfig.json
+├── render.yaml           → Render deployment config
+└── .env.example
+
+shared/
+├── types/                → TypeScript type definitions
+├── constants/            → Shared constants
+├── interfaces/           → Service interfaces
+├── validation/           → Shared Zod schemas
+└── package.json
+
+docs/
+├── architecture.md
+├── deployment_guide.md
+├── api_documentation.md
+├── database_documentation.md
+├── security.md
+├── testing_documentation.md
+├── user_manual.md
+└── ...
+```
+
+---
+
+## License
+
+MIT
