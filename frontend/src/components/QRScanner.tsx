@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
 import { RiskBadge, RiskScore } from "@/components/risk-badge";
 import { AiExplanation } from "@/components/ai-explanation";
+import { customFetch } from "@/services";
 
 export interface QRScannerProps {
   apiBase?: string;
@@ -37,27 +38,23 @@ export function QRScanner({ apiBase = "/api/", onScanSuccess }: QRScannerProps) 
     setLoading(true);
 
     try {
-      const token = localStorage.getItem("phishing_token");
       const fd = new FormData();
       fd.append("image", file);
 
-      const resp = await fetch(`${apiBase}scan/qr`, {
+      // Construct path relative to apiBase if it starts with slash, or use endpoint directly with customFetch which resolves correctly.
+      const path = `${apiBase}scan/qr`.replace(/\/+/g, "/"); // clean double slashes
+
+      const data = await customFetch<any>(path, {
         method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
         body: fd,
       });
 
-      const data = await resp.json() as any;
-      if (!resp.ok) {
-        setError(data.error ?? "Scan failed");
-        return;
-      }
       setResult(data);
       if (onScanSuccess) {
         onScanSuccess(data);
       }
-    } catch {
-      setError("Network error. Please try again.");
+    } catch (err: any) {
+      setError(err.data?.error || "Scan failed");
     } finally {
       setLoading(false);
     }

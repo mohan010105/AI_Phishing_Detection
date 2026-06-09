@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
 import { RiskBadge, RiskScore } from "@/components/risk-badge";
 import { AiExplanation } from "@/components/ai-explanation";
-import type { ScreenshotScanResult } from "@/services";
+import { ScreenshotScanResult, customFetch } from "@/services";
 
 const API_BASE = "/api/";
 
@@ -37,24 +37,16 @@ export default function ScanScreenshot() {
     setLoading(true);
 
     try {
-      const token = localStorage.getItem("phishing_token");
       const fd = new FormData();
       fd.append("image", file);
 
-      const resp = await fetch(`${API_BASE}scan/screenshot`, {
+      const data = await customFetch<ScreenshotScanResult>("/api/scan/screenshot", {
         method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
         body: fd,
       });
-
-      const data = await resp.json() as ScreenshotScanResult & { error?: string };
-      if (!resp.ok) {
-        setError(data.error ?? "Analysis failed");
-        return;
-      }
       setResult(data);
-    } catch {
-      setError("Network error. Please try again.");
+    } catch (err: any) {
+      setError(err.data?.error || "Analysis failed");
     } finally {
       setLoading(false);
     }

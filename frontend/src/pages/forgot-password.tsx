@@ -7,6 +7,7 @@ import { Shield, Loader2, ArrowLeft, Mail, CheckCircle2 } from "lucide-react";
 import { motion } from "framer-motion";
 
 import { useToast } from "@/hooks/use-toast";
+import { customFetch } from "@/services";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -34,37 +35,27 @@ export default function ForgotPassword() {
   const onSubmit = async (data: ForgotPasswordFormValues) => {
     setIsSubmitting(true);
     try {
-      const response = await fetch("/api/auth/forgot-password", {
+      await customFetch("/api/auth/forgot-password", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: data.email }),
       });
 
-      const result = await response.json();
-
-      if (response.ok) {
-        setIsSubmitted(true);
-        toast({
-          title: "Reset Link Sent",
-          description: "Check your email for the password reset link.",
-        });
-      } else {
-        toast({
-          variant: "destructive",
-          title: "Request Failed",
-          description: result.error || "Could not process your request.",
-        });
-      }
-    } catch {
+      setIsSubmitted(true);
+      toast({
+        title: "Reset Link Sent",
+        description: "Check your email for the password reset link.",
+      });
+    } catch (err: any) {
       toast({
         variant: "destructive",
-        title: "Network Error",
-        description: "Unable to connect to the server. Please try again.",
+        title: "Request Failed",
+        description: err.data?.error || "Could not process your request.",
       });
     } finally {
       setIsSubmitting(false);
     }
   };
+
 
   return (
     <div className="min-h-screen bg-background flex flex-col justify-center py-12 sm:px-6 lg:px-8 font-mono">

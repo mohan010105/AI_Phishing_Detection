@@ -7,6 +7,7 @@ import { Shield, Loader2, Lock, Eye, EyeOff, CheckCircle2, XCircle } from "lucid
 import { motion } from "framer-motion";
 
 import { useToast } from "@/hooks/use-toast";
+import { customFetch } from "@/services";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -68,36 +69,25 @@ export default function ResetPassword() {
     if (!resetToken) return;
     setIsSubmitting(true);
     try {
-      const response = await fetch("/api/auth/reset-password", {
+      await customFetch("/api/auth/reset-password", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token: resetToken, password: data.password }),
       });
 
-      const result = await response.json();
-
-      if (response.ok) {
-        setIsSuccess(true);
-        toast({
-          title: "Password Updated",
-          description: "Your passkey has been reset successfully.",
-        });
-      } else {
-        toast({
-          variant: "destructive",
-          title: "Reset Failed",
-          description: result.error || "Could not reset password.",
-        });
-        if (response.status === 400 || response.status === 401) {
-          setIsInvalidToken(true);
-        }
-      }
-    } catch {
+      setIsSuccess(true);
+      toast({
+        title: "Password Updated",
+        description: "Your passkey has been reset successfully.",
+      });
+    } catch (err: any) {
       toast({
         variant: "destructive",
-        title: "Network Error",
-        description: "Unable to connect to the server. Please try again.",
+        title: "Reset Failed",
+        description: err.data?.error || "Could not reset password.",
       });
+      if (err.status === 400 || err.status === 401) {
+        setIsInvalidToken(true);
+      }
     } finally {
       setIsSubmitting(false);
     }

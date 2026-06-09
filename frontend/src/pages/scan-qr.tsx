@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { RiskBadge, RiskScore } from "@/components/risk-badge";
 import { AiExplanation } from "@/components/ai-explanation";
 import { ExternalSources } from "@/components/external-sources";
+import { customFetch } from "@/services";
 
 const API_BASE = "/api/";
 
@@ -69,24 +70,16 @@ export default function ScanQr() {
     setLoading(true);
 
     try {
-      const token = localStorage.getItem("phishing_token");
       const fd = new FormData();
       fd.append("image", file);
 
-      const resp = await fetch(`${API_BASE}scan/qr`, {
+      const data = await customFetch<QrScanResultData>("/api/scan/qr", {
         method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
         body: fd,
       });
-
-      const data = await resp.json() as QrScanResultData;
-      if (!resp.ok) {
-        setError(data.error ?? "Scan failed");
-        return;
-      }
       setResult(data);
-    } catch {
-      setError("Network error. Please try again.");
+    } catch (err: any) {
+      setError(err.data?.error || "Scan failed");
     } finally {
       setLoading(false);
     }

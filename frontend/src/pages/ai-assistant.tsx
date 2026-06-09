@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Bot, User, Send, Loader2, Trash2, Shield, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
+import { customFetch } from "@/services";
 
 const API_BASE = "/api/";
 
@@ -42,6 +43,24 @@ export default function AiAssistant() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  useEffect(() => {
+    const fetchHistory = async () => {
+      try {
+        const data = await customFetch<{ messages: Array<{ role: string; content: string; createdAt: string }> }>("/api/assistant/history");
+        if (data.messages && data.messages.length > 0) {
+          setMessages(data.messages.map(m => ({
+            role: m.role as "user" | "assistant",
+            content: m.content,
+            timestamp: new Date(m.createdAt),
+          })));
+        }
+      } catch (err: any) {
+        console.error("Failed to load AI assistant history", err);
+      }
+    };
+    fetchHistory();
+  }, []);
+
   const sendMessage = async (text?: string) => {
     const messageText = (text ?? input).trim();
     if (!messageText || loading) return;
@@ -52,36 +71,19 @@ export default function AiAssistant() {
     setLoading(true);
 
     try {
-      const token = localStorage.getItem("phishing_token");
-      const resp = await fetch(`${API_BASE}assistant/chat`, {
+      const data = await customFetch<{ reply: string }>("/api/assistant/chat", {
         method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ message: messageText }),
       });
-
-      if (!resp.ok) {
-        const err = await resp.json().catch(() => ({ error: "Request failed" }));
-        const errorMessage = err.error ?? "Request failed";
-        // Show the specific error as an assistant message so the user sees what went wrong
-        setMessages(prev => [...prev, {
-          role: "assistant",
-          content: `⚠️ ${errorMessage}`,
-          timestamp: new Date(),
-        }]);
-        toast({ title: "AI Assistant Error", description: errorMessage, variant: "destructive" });
-        return;
-      }
-
-      const data = await resp.json() as { reply: string };
       setMessages(prev => [...prev, { role: "assistant", content: data.reply, timestamp: new Date() }]);
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "Network error. Please check your connection.";
+    } catch (err: any) {
+      const errorMessage = err.data?.error || err.message || "Request failed";
       setMessages(prev => [...prev, {
         role: "assistant",
         content: `⚠️ ${errorMessage}`,
         timestamp: new Date(),
       }]);
-      toast({ title: "Error", description: errorMessage, variant: "destructive" });
+      toast({ title: "AI Assistant Error", description: errorMessage, variant: "destructive" });
     } finally {
       setLoading(false);
     }
@@ -89,18 +91,16 @@ export default function AiAssistant() {
 
   const clearHistory = async () => {
     try {
-      const token = localStorage.getItem("phishing_token");
-      await fetch(`${API_BASE}assistant/history`, {
+      await customFetch("/api/assistant/history", {
         method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
       });
       setMessages([{
         role: "assistant",
         content: "Conversation cleared. How can I help you today?",
         timestamp: new Date(),
       }]);
-    } catch {
-      toast({ title: "Error", description: "Failed to clear history", variant: "destructive" });
+    } catch (err: any) {
+      toast({ title: "Error", description: err.data?.error || "Failed to clear history", variant: "destructive" });
     }
   };
 

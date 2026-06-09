@@ -10,6 +10,7 @@ import { IncidentResponseCard } from "@/components/ai-explanation";
 import { Loader2, GitCompare, Trophy, ShieldAlert, Minus } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
+import { customFetch } from "@/services";
 
 const API_BASE = "/api/";
 
@@ -47,20 +48,13 @@ export default function ComparePage() {
     setLoading(true);
     setResult(null);
     try {
-      const token = localStorage.getItem("phishing_token");
-      const resp = await fetch(`${API_BASE}scan/compare`, {
+      const data = await customFetch<CompareResult>("/api/scan/compare", {
         method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ typeA, targetA: targetA.trim(), typeB, targetB: targetB.trim() }),
       });
-      if (!resp.ok) {
-        const err = await resp.json().catch(() => ({})) as { error?: string };
-        throw new Error(err.error ?? "Comparison failed");
-      }
-      const data = await resp.json() as CompareResult;
       setResult(data);
-    } catch (err) {
-      toast({ variant: "destructive", title: "Comparison Failed", description: err instanceof Error ? err.message : "Unknown error" });
+    } catch (err: any) {
+      toast({ variant: "destructive", title: "Comparison Failed", description: err.data?.error || err.message || "Unknown error" });
     } finally {
       setLoading(false);
     }
